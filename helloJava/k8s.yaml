@@ -46,5 +46,6 @@ spec:
     - protocol: TCP
       port: 10080
       targetPort: 80
-      nodePort: 10080
+      #不同环境同一个端口会冲突
+      #nodePort: 10080
   type: NodePort
