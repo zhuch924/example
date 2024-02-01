@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloJava
+  labels: 
+    app.kubernetes.io/name: demo-helloJava
+    app.kubernetes.io/instance: helloJava
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: demo-helloJava
+      app.kubernetes.io/instance: helloJava
+  replicas: 1
+  template:
+    metadata: 
+      labels:
+        app.kubernetes.io/name: demo-helloJava
+        app.kubernetes.io/instance: helloJava
+    spec:
+      containers:
+        - name: helloJava
+          image: helloJava:v0.0.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - /workspace/helloJava
+          ports:
+            - protocol: TCP
+              containerPort: 80
+          resources:
+            limits:
+              memory: 100Mi
+              cpu: 100m
+      imagePullSecrets:
+        - name: default-registry-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloJava-service
+spec:
+  selector:
+    app.kubernetes.io/name: demo-helloJava
+    app.kubernetes.io/instance: helloJava
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 10080
+  type: ClusterIP
