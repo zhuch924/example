@@ -44,6 +44,6 @@ spec:
     app.kubernetes.io/instance: hello-java
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 10080
-  type: ClusterIP
+      port: 10080
+      targetPort: 80
+  type: NodePort
