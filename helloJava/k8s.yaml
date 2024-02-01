@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: helloJava
+  name: hello-java
   labels: 
-    app.kubernetes.io/name: demo-helloJava
-    app.kubernetes.io/instance: helloJava
+    app.kubernetes.io/name: demo-hello-java
+    app.kubernetes.io/instance: hello-java
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: demo-helloJava
-      app.kubernetes.io/instance: helloJava
+      app.kubernetes.io/name: demo-hello-java
+      app.kubernetes.io/instance: hello-java
   replicas: 1
   template:
     metadata: 
       labels:
-        app.kubernetes.io/name: demo-helloJava
-        app.kubernetes.io/instance: helloJava
+        app.kubernetes.io/name: demo-hello-java
+        app.kubernetes.io/instance: hello-java
     spec:
       containers:
-        - name: helloJava
-          image: helloJava:v0.0.0
+        - name: hello-java
+          image: hello-java:v0.0.0
           imagePullPolicy: IfNotPresent
           command:
-            - /workspace/helloJava
+            - /workspace/hello-java
           ports:
             - protocol: TCP
               containerPort: 80
@@ -36,11 +36,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: helloJava-service
+  name: hello-java-service
 spec:
   selector:
-    app.kubernetes.io/name: demo-helloJava
-    app.kubernetes.io/instance: helloJava
+    app.kubernetes.io/name: demo-hello-java
+    app.kubernetes.io/instance: hello-java
   ports:
     - protocol: TCP
       port: 80
