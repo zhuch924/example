@@ -22,7 +22,8 @@ spec:
           image: hello-java:v0.0.0
           imagePullPolicy: IfNotPresent
           command:
-            - /workspace/hello-java
+            - java
+          args: ["-jar", "helloJava-1.0-SNAPSHOT.jar"]
           ports:
             - protocol: TCP
               containerPort: 80
