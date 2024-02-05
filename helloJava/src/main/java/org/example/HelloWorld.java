@@ -19,7 +19,7 @@ public class HelloWorld {
         }).start();
 
         while (true){
-            int port = 80;
+            int port = 10080;
 
             try(ServerSocket serverSocket = new ServerSocket(port)){
                 System.out.println("Server is listening on port " + port);
@@ -49,26 +49,28 @@ public class HelloWorld {
         }
     }
 
-    private static void handleClient(Socket clientSocket) {
+    public static void handleRequest(InputStream inputStream, OutputStream outputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            String receivedData = new String(buffer, 0, bytesRead);
+            System.out.println("Received from client: " + receivedData);
+
+            // 在这里可以添加自定义的处理逻辑
+
+            // 回复客户端
+            String responseData = "Hello, client! I received your message.";
+            outputStream.write(responseData.getBytes());
+        }
+    }
+
+    public static void handleClient(Socket clientSocket) {
         try (
                 InputStream inputStream = clientSocket.getInputStream();
                 OutputStream outputStream = clientSocket.getOutputStream()
         ) {
-            // 处理客户端请求
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                String receivedData = new String(buffer, 0, bytesRead);
-                System.out.println("Received from client: " + receivedData);
-
-                // 在这里可以添加自定义的处理逻辑
-
-                // 回复客户端
-                String responseData = "Hello, client! I received your message.";
-                outputStream.write(responseData.getBytes());
-            }
-
+            handleRequest(inputStream, outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
