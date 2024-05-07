@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloGo
+  labels:
+    app.kubernetes.io/name: demo-helloGo
+    app.kubernetes.io/instance: helloGo
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: demo-helloGo
+      app.kubernetes.io/instance: helloGo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: demo-helloGo
+        app.kubernetes.io/instance: helloGo
+    spec:
+      containers:
+        - name: helloGo
+          image: helloGo:v0.0.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - /workspace/helloGo
+          ports:
+            - protocol: TCP
+              containerPort: 10081
+          resources:
+            limits:
+              memory: 100Mi
+              cpu: 100m
+      imagePullSecrets:
+        - name: default-registry-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloGo-service
+spec:
+  selector:
+    app.kubernetes.io/name: demo-helloGo
+    app.kubernetes.io/instance: helloGo
+  ports:
+    - protocol: TCP
+      port: 10081
+      targetPort: 10081
+  type: ClusterIP
